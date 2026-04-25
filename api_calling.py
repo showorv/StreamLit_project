@@ -4,6 +4,8 @@ import os
 
 from dotenv import load_dotenv
 
+from gtts import gTTS
+import io
 load_dotenv()
 
 my_api_key = os.getenv("GEMINI_API_KEY")
@@ -22,3 +24,26 @@ def note_generator(images):
     )
 
     return response.text
+
+def audio_transcription(text):
+
+    speech = gTTS(text, lang="en", slow=False)
+
+    # for save audio in ram instead of local. for local speech.save("audio.mp3")
+    audio_buffer = io.BytesIO()
+    speech.write_to_fp(audio_buffer)
+    
+    return audio_buffer
+
+def quiz_generator(image,difficulty):
+
+    prompt = f"Generate 3 quizzes based on the {difficulty}. Make sure to add markdown to differentiate the options. Add correct answer too,after the quiz"
+
+
+    response = client.models.generate_content(
+        model = "gemini-3-flash-preview",
+        contents=[image,prompt]
+    )
+
+    return response.text 
+

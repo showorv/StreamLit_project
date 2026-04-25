@@ -1,5 +1,5 @@
 import streamlit as st 
-from api_calling import note_generator
+from api_calling import note_generator,audio_transcription,quiz_generator
 from PIL import Image
 
 
@@ -80,15 +80,24 @@ if pressed:
           #audio
         with st.container(border=True):
 
-            st.subheader("Audio Transcript",anchor=False)
-            st.text("will be replace by api call")
+            st.subheader("Audio Transcription",anchor=False)
+            with st.spinner("Audio is transiting"):
+
+                #clear all markdown
+                note_generators = note_generators.replace("#","")
+                note_generators = note_generators.replace("*","")
+                note_generators = note_generators.replace("-","")
+                note_generators = note_generators.replace("`","")
+
+                audio_generate = audio_transcription(note_generators)
+                st.audio(audio_generate)
+
           #quiz
         with st.container(border=True):
+            st.subheader(f"Quiz ({selected_option}) Difficulty")
 
-            st.subheader("Quiz questions",anchor=False)
-            st.text("will be replace by api call")
-          #quiz answer
-        with st.container(border=True):
+            #the portion below will be replaced by API Call 
 
-            st.subheader("Answer",anchor=False)
-            st.text("will be replace by api call")
+            with st.spinner("AI is generating the quizzes"):
+                quizzes = quiz_generator(pil_images,selected_option)
+                st.markdown(quizzes)
