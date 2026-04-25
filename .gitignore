@@ -33,3 +33,5 @@ build/
 
 # Jupyter (if used)
 .ipynb_checkpoints/
+
+stream_project/
